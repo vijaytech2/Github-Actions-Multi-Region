@@ -13,7 +13,7 @@ jobs:
     secrets:
       aws_access_key_id: ${{ secrets.AWS_ACCESS_KEY_ID_UAT }}
       aws_secret_access_key: ${{ secrets.AWS_SECRET_ACCESS_KEY_UAT }}
-      aws-region: ${{ secrets.AWS_REGION }}
+      aws_region: ${{ secrets.AWS_REGION }}
 
   Deploy_Dev:
     needs: Plan_Dev
@@ -25,7 +25,7 @@ jobs:
     secrets:
       aws_access_key_id: ${{ secrets.AWS_ACCESS_KEY_ID_UAT }}
       aws_secret_access_key: ${{ secrets.AWS_SECRET_ACCESS_KEY_UAT }}
-      aws-region: ${{ secrets.AWS_REGION }}
+      aws_region: ${{ secrets.AWS_REGION }}
 
   Plan_Uat:
     if: github.ref == 'refs/heads/main'
@@ -37,7 +37,7 @@ jobs:
     secrets:
       aws_access_key_id: ${{ secrets.ACCESS_KEY_ID_PROD }}
       aws_secret_access_key: ${{ secrets.SECRET_ACCESS_KEY_PROD }}
-      aws-region: ${{ secrets.AWS_REGION }}
+      aws_region: ${{ secrets.AWS_REGION }}
 
   Deploy_Uat:
     needs: Plan_Uat
@@ -49,4 +49,4 @@ jobs:
     secrets:
       aws_access_key_id: ${{ secrets.ACCESS_KEY_ID_PROD }}
       aws_secret_access_key: ${{ secrets.SECRET_ACCESS_KEY_PROD }}
-      aws-region: ${{ secrets.AWS_REGION }}
+      aws_region: ${{ secrets.AWS_REGION }}
