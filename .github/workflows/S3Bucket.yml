@@ -4,10 +4,10 @@ on:
 
 jobs:
   Plan_Dev:
-    if: github.ref == 'refs/heads/Feature1.0'
+    if: github.ref == 'refs/heads/feature'
     uses: RekhuGopal/gitreusableflows/.github/workflows/aws_tf_plan.yml@feature1
     with:
-      path: Github-Reusable-Code/S3Bucket
+      path: S3Bucket
       tf_vars_file: dev.tfvars
       gh_environment: dev
     secrets:
@@ -17,13 +17,15 @@ jobs:
 
   Deploy_Dev:
     needs: Plan_Dev
-    uses: RekhuGopal/gitreusableflows/.github/workflows/aws_tf_appy.yml@Feature1.0
+    uses: RekhuGopal/gitreusableflows/.github/workflows/aws_tf_appy.yml@feature1
     with:
-      path: Github-Reusable-Code/S3Bucket
+      path: S3Bucket
       tf_vars_file: dev.tfvars
       gh_environment: dev
     secrets:
-      cli_config_credentials_token: ${{ secrets.TF_API_TOKEN }}
+      aws_access_key_id: ${{ secrets.AWS_ACCESS_KEY_ID_UAT }}
+      aws_secret_access_key: ${{ secrets.AWS_SECRET_ACCESS_KEY_UAT }}
+      aws-region: ${{ secrets.AWS_REGION }}
 
   Plan_Uat:
     if: github.ref == 'refs/heads/main'
@@ -31,9 +33,11 @@ jobs:
     with:
       path: S3Bucket
       tf_vars_file: uat.tfvars
-      gh_environment: uat
+      gh_environment: prod
     secrets:
-      cli_config_credentials_token: ${{ secrets.TF_API_TOKEN }}
+      aws_access_key_id: ${{ secrets.ACCESS_KEY_ID_PROD }}
+      aws_secret_access_key: ${{ secrets.SECRET_ACCESS_KEY_PROD }}
+      aws-region: ${{ secrets.AWS_REGION }}
 
   Deploy_Uat:
     needs: Plan_Uat
@@ -41,7 +45,7 @@ jobs:
     with:
       path: S3Bucket
       tf_vars_file: uat.tfvars
-      gh_environment: uat
+      gh_environment: prod
     secrets:
       aws_access_key_id: ${{ secrets.ACCESS_KEY_ID_PROD }}
       aws_secret_access_key: ${{ secrets.SECRET_ACCESS_KEY_PROD }}
