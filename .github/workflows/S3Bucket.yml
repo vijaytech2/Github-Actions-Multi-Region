@@ -1,0 +1,48 @@
+name: "01_S3Bucket"
+on:
+  workflow_dispatch:
+
+jobs:
+  Plan_Dev:
+    if: github.ref == 'refs/heads/Feature1.0'
+    uses: RekhuGopal/gitreusableflows/.github/workflows/aws_tf_plan.yml@feature1
+    with:
+      path: Github-Reusable-Code/S3Bucket
+      tf_vars_file: dev.tfvars
+      gh_environment: dev
+    secrets:
+      aws_access_key_id: ${{ secrets.AWS_ACCESS_KEY_ID_UAT }}
+      aws_secret_access_key: ${{ secrets.AWS_SECRET_ACCESS_KEY_UAT }}
+      aws-region: ${{ secrets.AWS_REGION }}
+
+  Deploy_Dev:
+    needs: Plan_Dev
+    uses: RekhuGopal/gitreusableflows/.github/workflows/aws_tf_appy.yml@Feature1.0
+    with:
+      path: Github-Reusable-Code/S3Bucket
+      tf_vars_file: dev.tfvars
+      gh_environment: dev
+    secrets:
+      cli_config_credentials_token: ${{ secrets.TF_API_TOKEN }}
+
+  Plan_Uat:
+    if: github.ref == 'refs/heads/main'
+    uses: RekhuGopal/gitreusableflows/.github/workflows/aws_tf_plan.yml@main
+    with:
+      path: S3Bucket
+      tf_vars_file: uat.tfvars
+      gh_environment: uat
+    secrets:
+      cli_config_credentials_token: ${{ secrets.TF_API_TOKEN }}
+
+  Deploy_Uat:
+    needs: Plan_Uat
+    uses: RekhuGopal/gitreusableflows/.github/workflows/aws_tf_appy.yml@main
+    with:
+      path: S3Bucket
+      tf_vars_file: uat.tfvars
+      gh_environment: uat
+    secrets:
+      aws_access_key_id: ${{ secrets.ACCESS_KEY_ID_PROD }}
+      aws_secret_access_key: ${{ secrets.SECRET_ACCESS_KEY_PROD }}
+      aws-region: ${{ secrets.AWS_REGION }}
