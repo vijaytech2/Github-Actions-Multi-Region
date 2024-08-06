@@ -4,7 +4,7 @@ on:
 
 jobs:
   Plan_Dev:
-    if: github.ref == 'refs/heads/feature'
+    if: github.ref == 'refs/heads/feature1'
     uses: vijaytech2/Github-Actions-Multi-Region/.github/workflows/aws_tf_plan.yml@feature1
     with:
       path: S3Bucket
