@@ -16,7 +16,7 @@ jobs:
       NODE_VERSION: 14
       DEV_ENV: dev
       TEST_ENV: test
-      FEATURE_ENV: feature/*
+      FEATURE_ENV: feature
 
     concurrency:
       group: ${{ github.workflow }}-${{ github.ref }}
