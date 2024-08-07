@@ -32,7 +32,7 @@ jobs:
     uses: vijaytech2/Github-Actions-Multi-Region/.github/workflows/aws_tf_plan.yml@main
     with:
       path: S3Bucket
-      tf_vars_file: prod.tfvars
+      tf_vars_file: uat.tfvars
       gh_environment: prod
     secrets:
       aws_access_key_id: ${{ secrets.ACCESS_KEY_ID_PROD }}
@@ -44,7 +44,7 @@ jobs:
     uses: vijaytech2/Github-Actions-Multi-Region/.github/workflows/aws_tf_appy.yml@main
     with:
       path: S3Bucket
-      tf_vars_file: prod.tfvars
+      tf_vars_file: uat.tfvars
       gh_environment: prod
     secrets:
       aws_access_key_id: ${{ secrets.ACCESS_KEY_ID_PROD }}
