@@ -9,7 +9,7 @@ on:
       - 'hotfix/*'
 
 jobs:
-  build:
+  terraform-deploy:
     runs-on: ubuntu-latest
 
     env:
@@ -23,17 +23,21 @@ jobs:
       cancel-in-progress: false
 
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v2
+      - name: Set Environment
+        id: set-env
+        run: |
+          if [[ "${{ github.ref }}" == refs/heads/develop ]]; then
+            echo "ENVIRONMENT=${{ env.DEV_ENV }}" >> $GITHUB_ENV
+          elif [[ "${{ github.ref }}" == refs/heads/main ]]; then
+            echo "ENVIRONMENT=${{ env.TEST_ENV }}" >> $GITHUB_ENV
+          elif [[ "${{ github.ref }}" == refs/heads/feature/* ]] || [[ "${{ github.ref }}" == refs/heads/hotfix/* ]]; then
+            echo "ENVIRONMENT=${{ env.FEATURE_ENV }}" >> $GITHUB_ENV
+          fi
 
-    - name: Set Environment for Develop
-      if: startsWith(github.ref, 'refs/heads/develop')
-      run: echo "ENVIRONMENT=${{ env.DEV_ENV }}" >> $GITHUB_ENV
+      - name: Call Terraform Workflow
+        uses: ./.github/workflows/terraform-reusable.yml
+        with:
+          path: S3Bucket   # Adjust to your Terraform configuration path
+          tf_vars_file: ${{ env.TF_VARS_FILE }}
+          environment: ${{ env.ENVIRONMENT }}
 
-    - name: Set Environment for Main
-      if: startsWith(github.ref, 'refs/heads/main')
-      run: echo "ENVIRONMENT=${{ env.TEST_ENV }}" >> $GITHUB_ENV
-
-    - name: Set Environment for Feature/Hotfix
-      if: startsWith(github.ref, 'refs/heads/feature/') || startsWith(github.ref, 'refs/heads/hotfix/')
-      run: echo "ENVIRONMENT=${{ env.FEATURE_ENV }}" >> $GITHUB_ENV

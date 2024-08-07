@@ -1,0 +1,50 @@
+name: Reusable Workflow
+
+on:
+  workflow_call:
+    inputs:
+      environment:
+        description: 'The environment to deploy to'
+        required: true
+        type: string
+      tf_vars_file:
+        description: 'Terraform variables file'
+        required: false
+        type: string
+      path:
+        description: 'Path to Terraform configuration'
+        required: true
+        type: string
+    
+    secrets:
+      AWS_ACCESS_KEY_ID_UAT:
+        required: true
+      AWS_SECRET_ACCESS_KEY_UAT:
+        required: true
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up AWS CLI
+        uses: aws-actions/configure-aws-credentials@v2
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID_UAT }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY_UAT }}
+          aws-region: 'us-west-2'
+
+      - name: Deploy to ${{ inputs.environment }}
+        run: |
+          echo "Deploying to ${{ inputs.environment }} environment"
+      - name: Terraform Validate
+        run: terraform validate
+  
+      - name: Terraform Plan
+        run: terraform plan -var-file=${{ inputs.tf_vars_file }} -out=tfplan
+  
+      - name: Terraform Apply
+        run: terraform apply -auto-approve tfplan
+          # Consider adding an `if` condition here to control when to apply
