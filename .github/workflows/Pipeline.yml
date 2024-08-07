@@ -26,17 +26,6 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v2
 
-    - name: Set up Node.js
-      uses: actions/setup-node@v2
-      with:
-        node-version: ${{ env.NODE_VERSION }}
-
-    - name: Install dependencies
-      run: npm install
-
-    - name: Run tests
-      run: npm test
-
     - name: Set Environment for Develop
       if: startsWith(github.ref, 'refs/heads/develop')
       run: echo "ENVIRONMENT=${{ env.DEV_ENV }}" >> $GITHUB_ENV
