@@ -1,0 +1,50 @@
+name: IaC Pipeline
+
+on:
+  push:
+    branches:
+      - develop
+      - main
+      - 'feature/*'
+      - 'hotfix/*'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    env:
+      NODE_VERSION: 14
+      DEV_ENV: dev
+      TEST_ENV: test
+      FEATURE_ENV: feature
+
+    concurrency:
+      group: ${{ github.workflow }}-${{ github.ref }}
+      cancel-in-progress: false
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Set up Node.js
+      uses: actions/setup-node@v2
+      with:
+        node-version: ${{ env.NODE_VERSION }}
+
+    - name: Install dependencies
+      run: npm install
+
+    - name: Run tests
+      run: npm test
+
+    - name: Set Environment for Develop
+      if: startsWith(github.ref, 'refs/heads/develop')
+      run: echo "ENVIRONMENT=${{ env.DEV_ENV }}" >> $GITHUB_ENV
+
+    - name: Set Environment for Main
+      if: startsWith(github.ref, 'refs/heads/main')
+      run: echo "ENVIRONMENT=${{ env.TEST_ENV }}" >> $GITHUB_ENV
+
+    - name: Set Environment for Feature/Hotfix
+      if: startsWith(github.ref, 'refs/heads/feature/') || startsWith(github.ref, 'refs/heads/hotfix/')
+      run: echo "ENVIRONMENT=${{ env.FEATURE_ENV }}" >> $GITHUB_ENV
