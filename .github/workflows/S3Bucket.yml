@@ -4,8 +4,8 @@ on:
 
 jobs:
   Plan_Dev:
-    if: github.ref == 'refs/heads/feature'
-    uses: RekhuGopal/gitreusableflows/.github/workflows/aws_tf_plan.yml@feature1
+    if: github.ref == 'refs/heads/feature1'
+    uses: vijaytech2/Github-Actions-Multi-Region/.github/workflows/aws_tf_plan.yml@feature1
     with:
       path: S3Bucket
       tf_vars_file: dev.tfvars
@@ -13,11 +13,11 @@ jobs:
     secrets:
       aws_access_key_id: ${{ secrets.AWS_ACCESS_KEY_ID_UAT }}
       aws_secret_access_key: ${{ secrets.AWS_SECRET_ACCESS_KEY_UAT }}
-      aws-region: ${{ secrets.AWS_REGION }}
+      aws_region: ${{ secrets.AWS_REGION }}
 
   Deploy_Dev:
     needs: Plan_Dev
-    uses: RekhuGopal/gitreusableflows/.github/workflows/aws_tf_appy.yml@feature1
+    uses: vijaytech2/Github-Actions-Multi-Region/.github/workflows/aws_tf_appy.yml@feature1
     with:
       path: S3Bucket
       tf_vars_file: dev.tfvars
@@ -25,28 +25,28 @@ jobs:
     secrets:
       aws_access_key_id: ${{ secrets.AWS_ACCESS_KEY_ID_UAT }}
       aws_secret_access_key: ${{ secrets.AWS_SECRET_ACCESS_KEY_UAT }}
-      aws-region: ${{ secrets.AWS_REGION }}
+      aws_region: ${{ secrets.AWS_REGION }}
 
   Plan_Uat:
     if: github.ref == 'refs/heads/main'
-    uses: RekhuGopal/gitreusableflows/.github/workflows/aws_tf_plan.yml@main
+    uses: vijaytech2/Github-Actions-Multi-Region/.github/workflows/aws_tf_plan.yml@main
     with:
       path: S3Bucket
-      tf_vars_file: uat.tfvars
+      tf_vars_file: prod.tfvars
       gh_environment: prod
     secrets:
       aws_access_key_id: ${{ secrets.ACCESS_KEY_ID_PROD }}
       aws_secret_access_key: ${{ secrets.SECRET_ACCESS_KEY_PROD }}
-      aws-region: ${{ secrets.AWS_REGION }}
+      aws_region: ${{ secrets.AWS_REGION }}
 
   Deploy_Uat:
     needs: Plan_Uat
-    uses: RekhuGopal/gitreusableflows/.github/workflows/aws_tf_appy.yml@main
+    uses: vijaytech2/Github-Actions-Multi-Region/.github/workflows/aws_tf_appy.yml@main
     with:
       path: S3Bucket
-      tf_vars_file: uat.tfvars
+      tf_vars_file: prod.tfvars
       gh_environment: prod
     secrets:
       aws_access_key_id: ${{ secrets.ACCESS_KEY_ID_PROD }}
       aws_secret_access_key: ${{ secrets.SECRET_ACCESS_KEY_PROD }}
-      aws-region: ${{ secrets.AWS_REGION }}
+      aws_region: ${{ secrets.AWS_REGION }}
