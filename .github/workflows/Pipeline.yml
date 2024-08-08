@@ -39,7 +39,7 @@ jobs:
 
           
       - name: Call Terraform Workflow
-        uses: ./.github/workflows/terraform-reusable.yml@develop
+        uses: ./.github/workflows/terraform-reusable.yml
         with:
           path: S3Bucket   # Adjust to your Terraform configuration path
         
