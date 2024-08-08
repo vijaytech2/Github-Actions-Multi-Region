@@ -22,6 +22,7 @@ on:
       AWS_SECRET_ACCESS_KEY_UAT:
         required: true
 
+
 jobs:
   deploy:
     runs-on: ubuntu-latest
@@ -32,9 +33,9 @@ jobs:
       - name: Set up AWS CLI
         uses: aws-actions/configure-aws-credentials@v2
         with:
-          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID_UAT }}
-          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY_UAT }}
-          aws-region: 'us-west-2'
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ secrets.AWS_REGION }}
 
       - name: Deploy to ${{ inputs.environment }}
         run: |
