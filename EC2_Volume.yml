@@ -1,13 +1,13 @@
-name: "02_S3Bucket"
+name: "EC2_Volume"
 on:
   workflow_dispatch:
 
 jobs:
   Plan_Dev:
-    if: github.ref == 'refs/heads/Feature1.0'
-    uses: RekhuGopal/gitreusableflows/.github/workflows/aws_tf_plan.yml@Feature1.0
+    if: github.ref == 'refs/heads/develop'
+    uses: vijaytech2/Github-Actions-Multi-Region/aws_tf_plan.yml@develop
     with:
-      path: Github-Reusable-Code/S3Bucket
+      path: env
       tf_vars_file: dev.tfvars
       gh_environment: dev
     secrets:
@@ -15,19 +15,19 @@ jobs:
 
   Deploy_Dev:
     needs: Plan_Dev
-    uses: RekhuGopal/gitreusableflows/.github/workflows/aws_tf_appy.yml@Feature1.0
+    uses: vijaytech2/Github-Actions-Multi-Region/.github/workflows/aws_tf_appy.yml@develop
     with:
-      path: Github-Reusable-Code/S3Bucket
+      path: env
       tf_vars_file: dev.tfvars
       gh_environment: dev
     secrets:
       cli_config_credentials_token: ${{ secrets.TF_API_TOKEN }}
 
   Plan_Uat:
-    if: github.ref == 'refs/heads/main'
-    uses: RekhuGopal/gitreusableflows/.github/workflows/aws_tf_plan.yml@main
+    if: github.ref == 'refs/heads/develop'
+    uses: vijaytech2/Github-Actions-Multi-Region/.github/workflows/aws_tf_plan.yml@develop
     with:
-      path: S3Bucket
+      path: env
       tf_vars_file: uat.tfvars
       gh_environment: uat
     secrets:
@@ -35,9 +35,9 @@ jobs:
 
   Deploy_Uat:
     needs: Plan_Uat
-    uses: RekhuGopal/gitreusableflows/.github/workflows/aws_tf_appy.yml@main
+    uses: vijaytech2/Github-Actions-Multi-Region/.github/workflows/aws_tf_appy.yml@develop
     with:
-      path: S3Bucket
+      path: env
       tf_vars_file: uat.tfvars
       gh_environment: uat
     secrets:
