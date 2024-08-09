@@ -5,7 +5,7 @@ on:
 jobs:
   Plan_Dev:
     if: github.ref == 'refs/heads/develop'
-    uses: ./.github/workflows/aws_tf_plan.yml@develop
+    uses: ./.github/workflows/aws_tf_plan.yml
     with:
       path: env
       tf_vars_file: dev.tfvars
@@ -17,7 +17,7 @@ jobs:
 
   Deploy_Dev:
     needs: Plan_Dev
-    uses: ./.github/workflows/aws_tf_appy.yml@develop
+    uses: ./.github/workflows/aws_tf_appy.yml
     with:
       path: env
       tf_vars_file: dev.tfvars
@@ -29,7 +29,7 @@ jobs:
 
   Plan_Uat:
     if: github.ref == 'refs/heads/develop'
-    uses: ./.github/workflows/aws_tf_plan.yml@develop
+    uses: ./.github/workflows/aws_tf_plan.yml
     with:
       path: env
       tf_vars_file: uat.tfvars
@@ -41,7 +41,7 @@ jobs:
 
   Deploy_Uat:
     needs: Plan_Uat
-    uses: ./.github/workflows/aws_tf_appy.yml@develop
+    uses: ./.github/workflows/aws_tf_appy.yml
     with:
       path: env
       tf_vars_file: uat.tfvars
