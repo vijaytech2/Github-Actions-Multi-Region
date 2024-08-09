@@ -17,11 +17,9 @@ on:
         type: string
     
     secrets:
-      aws_access_key_id:
+      AWS_ACCESS_KEY_ID_UAT:
         required: true
-      aws_secret_access_key:
-        required: true
-      aws_region:
+      AWS_SECRET_ACCESS_KEY_UAT:
         required: true
 
 

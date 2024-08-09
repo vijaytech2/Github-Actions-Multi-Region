@@ -22,11 +22,14 @@ on:
         required: true
         type: string
     secrets:
-      aws_access_key_id:
+      AWS_ACCESS_KEY_ID:
+        description: 'AWS Access Key ID'
         required: true
-      aws_secret_access_key:
+      AWS_SECRET_ACCESS_KEY:
+        description: 'AWS Secret Access Key'
         required: true
-      aws_region:
+      AWS_REGION:
+        description: 'AWS Region'
         required: true
 
 jobs:
@@ -49,9 +52,9 @@ jobs:
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v2
         with:
-          aws-access-key-id: ${{ secrets.aws_access_key_id }}
-          aws-secret-access-key: ${{ secrets.aws_secret_access_key }}
-          aws-region: ${{ secrets.aws_region }}
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ secrets.AWS_REGION }}
 
       - name: Terraform Init
         id: init
